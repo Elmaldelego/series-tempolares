@@ -265,7 +265,10 @@ class BuildProphet(BuildBase):
                 if fold_number == 0:
                     extra_concatenated = copy.deepcopy(concatenated)
                 else:
-                    extra_concatenated = extra_concatenated.append(concatenated)
+                    try:
+                        extra_concatenated = extra_concatenated.append(concatenated)
+                    except Exception as e:
+                        extra_concatenated = pd.concat([extra_concatenated,concatenated]) 
 
                 rmse_fold, rmse_norm = print_dynamic_rmse(concatenated['original'].values, concatenated['predicted'].values,
                                             concatenated['original'].values)

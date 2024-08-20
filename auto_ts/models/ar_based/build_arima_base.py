@@ -163,7 +163,11 @@ class BuildArimaBase(BuildBase):
                 else:
                     concatenated = pd.DataFrame(np.c_[ts_test[self.original_target_col].values,
                                 y_forecasted], columns=['original', 'predicted'],index=ts_test.index)
-                    extra_concatenated = extra_concatenated.append(concatenated)
+                    try:
+                        extra_concatenated = extra_concatenated.append(concatenated)
+                    except Exception as e:
+                        extra_concatenated = pd.concat([extra_concatenated,concatenated]) 
+
 
                 ### for SARIMAX and Auto_ARIMA, you don't have to restore differences since it predicts like actuals.###
                 y_true = concatenated['original']
