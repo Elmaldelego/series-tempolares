@@ -268,9 +268,13 @@ class BuildML(BuildBase):
                 concatenated = pd.DataFrame(np.c_[y_test_fold, y_pred], columns=['original', 'predicted'],index=y_test_fold.index)
 
                 if fold_number == 0:
-                    extra_concatenated = copy.deepcopy(concatenated)
+                    extra_concatenated = copy.deepcopy(concatenated) 
                 else:
-                    extra_concatenated = extra_concatenated.append(concatenated)
+                    try:
+                        extra_concatenated = extra_concatenated.append(concatenated)
+                    except Exception as e:
+                        extra_concatenated = pd.concat([extra_concatenated,concatenated]) 
+                    
 
                 rmse_fold, rmse_norm = print_dynamic_rmse(concatenated['original'].values, concatenated['predicted'].values,
                                             concatenated['original'].values)
@@ -334,7 +338,10 @@ class BuildML(BuildBase):
                 rmse_folds.append(rmse_fold)
                 norm_rmse_folds.append(rmse_norm)
                 forecast_df_folds.append(y_pred)
-                extra_concatenated.append(concatenated)
+                try:
+                    extra_concatenated.append(concatenated)
+                except Exception as e:
+                    extra_concatenated = pd.concat([extra_concatenated,concatenated]) 
             #######  Now plot feature importances for pandas dataframes ###########
             try:
                 #####  This is for plotting pandas dataframes only ################
