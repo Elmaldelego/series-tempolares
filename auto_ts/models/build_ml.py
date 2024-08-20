@@ -338,10 +338,8 @@ class BuildML(BuildBase):
                 rmse_folds.append(rmse_fold)
                 norm_rmse_folds.append(rmse_norm)
                 forecast_df_folds.append(y_pred)
-                try:
-                    extra_concatenated.append(concatenated)
-                except Exception as e:
-                    extra_concatenated = pd.concat([extra_concatenated,concatenated]) 
+                extra_concatenated.append(concatenated)
+                
             #######  Now plot feature importances for pandas dataframes ###########
             try:
                 #####  This is for plotting pandas dataframes only ################
